@@ -34,7 +34,7 @@ const login = async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 };
-export const getuserdetails = (req, res, next) => {
+ const getuserdetails = (req, res, next) => {
   try {
     if (!req.user) {
       return res.status(401).json({
