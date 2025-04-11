@@ -5,12 +5,12 @@ const sendcookie = (user, res, message, statusCode) => {
         expiresIn: "1h",
     });
 
-res.cookie('token', token, {
-  httpOnly: true,
-  sameSite: 'Lax',
-  secure: false, // Set true only in production with HTTPS
-  maxAge: 3600000, // 1 hour
-});
+  res.cookie("token", token, {
+    httpOnly: true,
+    maxAge: 15 * 60 * 1000, // 15 minutes
+    sameSite: process.env.NODE_ENV === "DEVELOPMENT" ? "Lax" : "None",
+    secure: process.env.NODE_ENV !== "DEVELOPMENT",
+  });
 
 
     res.status(statusCode).json({
