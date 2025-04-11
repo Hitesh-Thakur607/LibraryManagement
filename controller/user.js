@@ -34,9 +34,25 @@ const login = async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 };
+export const getuserdetails = (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized: No user found",
+      });
+    }
 
+    res.status(200).json({
+      success: true,
+      user: req.user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
-module.exports={register,login};
+module.exports={register,login,getuserdetails};
 // {
 //     "name":"kaduwala",
 //    "email":"kadulelo@gmai.com",
