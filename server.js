@@ -9,7 +9,7 @@ const port = 3000;
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: "http://localhost:3000", // or whatever your frontend is
+    origin: "http://localhost:5173/", // or whatever your frontend is
     credentials: true,
 }));
 
