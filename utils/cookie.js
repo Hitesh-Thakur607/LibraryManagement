@@ -1,16 +1,15 @@
-const jwt=  require("jsonwebtoken");
 const sendcookie = (user, res, message, statusCode) => {
-    const token = jwt.sign({ _id: user.id }, process.env.JWT_SECRET,
-    {
+    const token = jwt.sign({ _id: user.id }, process.env.JWT_SECRET, {
         expiresIn: "1h",
     });
-    // console.log("Token sent to client:", token);
+
+    const isProduction = process.env.NODE_ENV === "production";
 
     res.cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "None",
-        maxAge: 3600000, 
+        secure: isProduction,            // 🔁 Only true in production
+        sameSite: isProduction ? "None" : "Lax",  // 🔁 Adjust for local dev
+        maxAge: 3600000,
     });
 
     res.status(statusCode).json({
@@ -19,5 +18,3 @@ const sendcookie = (user, res, message, statusCode) => {
         user,
     });
 };
-
-module.exports = { sendcookie };
