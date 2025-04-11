@@ -5,13 +5,12 @@ const sendcookie = (user, res, message, statusCode) => {
         expiresIn: "1h",
     });
 
-  res.cookie("token", token, {
-    httpOnly: true,
-    maxAge: 15 * 60 * 1000, // 15 minutes
-    sameSite: process.env.NODE_ENV === "DEVELOPMENT" ? "Lax" : "None",
-    secure: process.env.NODE_ENV !== "DEVELOPMENT",
-  });
-
+    res.cookie("token", token, {
+        httpOnly: true,
+        maxAge: 15 * 60 * 1000, // 15 minutes
+        sameSite: process.env.NODE_ENV === "DEVELOPMENT" ? "Lax" : "None",
+        secure: process.env.NODE_ENV !== "DEVELOPMENT",
+    });
 
     res.status(statusCode).json({
         success: true,
@@ -19,6 +18,9 @@ const sendcookie = (user, res, message, statusCode) => {
         user,
     });
 };
+
+module.exports = sendcookie; // 👈 This is the missing part!
+
 // const jwt=require('jsonwebtoken)
 
 // export const sendcookie = (user, res, message, statusCode = 200) => {
