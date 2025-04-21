@@ -51,8 +51,16 @@ const login = async (req, res) => {
     next(error);
   }
 };
-
-module.exports={register,login,getuserdetails};
+const logout=async(req,res)=>{
+    res.cookie("token",null,{
+        expires:new Date(Date.now()),
+        httpOnly:true,
+        secure:true,
+        sameSite:"none"
+    });
+    return res.status(200).json({message:"Logged out successfully"});
+}
+module.exports={register,login,getuserdetails,logout};
 // {
 //     "name":"kaduwala",
 //    "email":"kadulelo@gmai.com",
