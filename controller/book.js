@@ -1,21 +1,21 @@
 const { books } = require("../Model/books.js");
 
-// GET all books (available only)
+
 const getAllBooks = async (req, res) => {
     try {
-        const allBooks = await books.find(); // ← renamed variable
+        const allBooks = await books.find({ borrowed: false }); 
         if (allBooks.length === 0) {
             return res.status(200).json({ message: "No books available" });
         }
         res.status(200).json(allBooks);
     } catch (error) {
-        console.error("Get All Books Error:", error); // also add this for future debugging
+        console.error("Get All Books Error:", error); 
         res.status(500).json({ error: "Server error" });
     }
 };
 
 
-// GET book by ID
+
 const getBookById = async (req, res) => {
     try {
         const book = await books.findById(req.params.id).select('+description');
@@ -28,7 +28,7 @@ const getBookById = async (req, res) => {
     }
 };
 
-// POST a new book
+
 const postBook = async (req, res) => {
     try {
         const { name, description } = req.body;
@@ -49,7 +49,7 @@ const postBook = async (req, res) => {
     }
 };
 
-// PATCH borrow a book
+
 const borrowBook = async (req, res) => {
     try {
         const book = await books.findById(req.params.id);
@@ -68,7 +68,7 @@ const borrowBook = async (req, res) => {
     }
 };
 
-// PATCH return a book
+
 const returnBook = async (req, res) => {
     try {
         const book = await books.findById(req.params.id);
@@ -87,7 +87,7 @@ const returnBook = async (req, res) => {
     }
 };
 
-// DELETE a book
+
 const deleteBook = async (req, res) => {
     try {
         const book = await books.findByIdAndDelete(req.params.id);
