@@ -1,16 +1,7 @@
-// const{register,login,getuserdetails,logout} =require("../controller/user.js");
-// const {isauthenticated}=require("../middleware/auth.js");
-// const express=require("express");
-// const router=express.Router();
-// router.post("/register",register);
-// router.post("/login",login);
-// router.get("/me",isauthenticated,getuserdetails);
-// router.get("/logout",isauthenticated,logout);
-// module.exports=router;
-const{register,login,logout,adminlogin} =require("../controller/user.js");
+const{register,login,logout} =require("../controller/user.js");
 const express=require("express");
 const router=express.Router();
 router.post("/register",register);
 router.post("/login",login);
-router.post("/adminlogin",adminlogin);
+// router.post("/adminlogin",adminlogin);
 module.exports=router;
