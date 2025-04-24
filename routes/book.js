@@ -15,11 +15,11 @@ router.get("/:id",isauthenticated,getBookById);
 // router.post("/postbook",isauthenticated,postBook);
 router.put("/borrowBook/:id",isauthenticated,borrowBook);
 router.put("/returnBook/:id",isauthenticated,returnBook);
-// router.delete("/deletebook/:id",isauthenticated,deleteBook);
+router.delete("/deletebook/:id",isauthenticated,isAdmin,deleteBook);
 
 router.post("/postbook", isauthenticated, isAdmin, postBook);
 
-router.delete("/books/:id", isauthenticated, isAdmin, deleteBook);
+// router.delete("/books/:id", isauthenticated, isAdmin, deleteBook);
 module.exports = router;returnBook
 // {
 //     "name":"hello",
