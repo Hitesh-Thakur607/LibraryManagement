@@ -118,7 +118,25 @@ const login = async (req, res) => {
 //         console.error("Login Error:", error);
 //         res.status(500).json({ message: "Server error" });
 //     }
-// }
+// } 
+const getuserdetails = (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized: No user found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      user: req.user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const logout=async(req,res)=>{
     res.cookie("token",null,{
         expires:new Date(Date.now()),
@@ -128,7 +146,7 @@ const logout=async(req,res)=>{
     });
     return res.status(200).json({message:"Logged out successfully"});
 }
-module.exports={register,login,logout};
+module.exports={register,login,logout,getuserdetails};
 // {
 //     "name":"kaduwala",
 //    "email":"kadulelo@gmai.com",
