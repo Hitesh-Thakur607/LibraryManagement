@@ -3,7 +3,7 @@ const { books } = require("../Model/books.js");
 
 const getAllBooks = async (req, res) => {
     try {
-        const allBooks = await books.find({ borrowed: false }); 
+        const allBooks =  books;
         if (allBooks.length === 0) {
             return res.status(200).json({ message: "No books available" });
         }
