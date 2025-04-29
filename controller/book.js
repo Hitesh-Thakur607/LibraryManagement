@@ -3,7 +3,7 @@ const { books } = require("../Model/books.js");
 
 const getAllBooks = async (req, res) => {
   try {
-    const allBooks = await Books.find(); // Fetch all books from the DB
+    const allBooks = await books.find(); // Fetch all books from the DB
     if (allBooks.length === 0) {
       return res.status(200).json({ message: "No books available" });
     }
