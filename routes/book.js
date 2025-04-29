@@ -14,7 +14,7 @@ router.get("/allbooks",isauthenticated,getAllBooks);
 router.get("/:id",isauthenticated,getBookById);
 // router.post("/postbook",isauthenticated,postBook);
 router.put("/borrowBook/:id",isauthenticated,borrowBook);
-router.put("/returnBook/:id",isauthenticated,returnBook);
+router.put("/returnBook/:id",isauthenticated,isAdmin,returnBook);
 router.delete("/deletebook/:id",isauthenticated,isAdmin,deleteBook);
 
 router.post("/postbook", isauthenticated, isAdmin, postBook);
