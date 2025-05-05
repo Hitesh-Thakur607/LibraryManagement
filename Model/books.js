@@ -47,7 +47,7 @@ const schema = new mongoose.Schema({
   },
   borrowedby: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User", // this should match your actual model name (e.g., "User")
+    ref: "users", // this should match your actual model name (e.g., "User")
     default: null
   },  
   borrowDate: {
