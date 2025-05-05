@@ -90,6 +90,24 @@ const borrowBook = async (req, res) => {
     }
 };
 
+// const returnBook = async (req, res) => {
+//     try {
+//         const book = await books.findById(req.params.id);
+//         if (!book) {
+//             return res.status(404).json({ message: "Book not found" });
+//         }
+//         if (!book.borrowed) {
+//             return res.status(400).json({ message: "Book was not borrowed" });
+//         }
+
+//         book.borrowed = false;
+//         await book.save();
+//         res.status(200).json({ message: "Book returned", book });
+//     } catch (error) {
+//         res.status(400).json({ message: "Invalid book ID" });
+//     }
+// };
+
 const returnBook = async (req, res) => {
     try {
         const book = await books.findById(req.params.id);
@@ -101,13 +119,15 @@ const returnBook = async (req, res) => {
         }
 
         book.borrowed = false;
+        book.borrowedby = null; 
+        book.borrowDate = null;
+        book.returnDate = new Date();
         await book.save();
         res.status(200).json({ message: "Book returned", book });
     } catch (error) {
         res.status(400).json({ message: "Invalid book ID" });
     }
 };
-
 
 const deleteBook = async (req, res) => {
     try {
