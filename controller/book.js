@@ -1,6 +1,5 @@
 const { books } = require("../Model/books.js");
-
-
+const {users}=require("../Model/user.js");
 const getAllBooks = async (req, res) => {
   try {
     // const allBooks = await books.find(); // Fetch all books from the DB
