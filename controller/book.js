@@ -50,6 +50,23 @@ const postBook = async (req, res) => {
 };
 
 
+// const borrowBook = async (req, res) => {
+//     try {
+//         const book = await books.findById(req.params.id);
+//         if (!book) {
+//             return res.status(404).json({ message: "Book not found" });
+//         }
+//         if (book.borrowed) {
+//             return res.status(400).json({ message: "Book already borrowed" });
+//         }
+
+//         book.borrowed = true;
+//         await book.save();
+//         res.status(200).json({ message: "Book borrowed", book });
+//     } catch (error) {
+//         res.status(400).json({ message: "Invalid book ID" });
+//     }
+// };
 const borrowBook = async (req, res) => {
     try {
         const book = await books.findById(req.params.id);
@@ -61,13 +78,17 @@ const borrowBook = async (req, res) => {
         }
 
         book.borrowed = true;
+        book.borrowedby = req.user._id;  // <- assumes user is added to request by auth middleware
+        book.borrowDate = new Date();
+        book.returnDate = null; // Reset return date when borrowing
+
         await book.save();
         res.status(200).json({ message: "Book borrowed", book });
     } catch (error) {
+        console.error("Borrow Book Error:", error);
         res.status(400).json({ message: "Invalid book ID" });
     }
 };
-
 
 const returnBook = async (req, res) => {
     try {
