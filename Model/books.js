@@ -32,8 +32,7 @@ const schema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: true,
-    select: false
+    required: true
   },
   borrowed: {
     type: Boolean,
