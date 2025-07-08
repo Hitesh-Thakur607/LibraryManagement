@@ -234,7 +234,7 @@ const getuserdetails = async (req, res, next) => {
     }
 
     // Proper DB query to get full user with populated borrowed books
-    const user = await Users.findById(req.user.id).populate("booksborrowed");
+    const user = await users.findById(req.user.id).populate("booksborrowed");
 
     if (!user) {
       return res.status(404).json({
