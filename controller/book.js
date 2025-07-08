@@ -122,6 +122,10 @@ const returnBook = async (req, res) => {
         book.borrowedby = null; 
         book.borrowDate = null;
         book.returnDate = new Date();
+        const user1 = await users.findById(req.user._id); 
+         // Check if user is fetched correctly
+        user1.booksborrowed.push(book._id);
+        await user1.save();;// Add book to user's borrowed books
         await book.save();
         res.status(200).json({ message: "Book returned", book });
     } catch (error) {
