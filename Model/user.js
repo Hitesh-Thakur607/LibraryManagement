@@ -47,6 +47,13 @@ const schema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  booksborrowed: {
+  type: [mongoose.Schema.Types.ObjectId],
+  ref: "books",
+  default: function () {
+    return [];
+  }
+}
 });
  const users=mongoose.model("users",schema);
  module.exports={users};
