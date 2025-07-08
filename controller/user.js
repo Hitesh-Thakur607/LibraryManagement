@@ -205,7 +205,26 @@ const verifyEmail = async (req, res) => {
 //         res.status(500).json({ message: "Server error" });
 //     }
 // } 
-const getuserdetails = (req, res, next) => {
+// const getuserdetails = (req, res, next) => {
+//   try {
+//     if (!req.user) {
+//       return res.status(401).json({
+//         success: false,
+//         message: "Unauthorized: No user found",
+//       });
+//     }
+
+//     res.status(200).json({
+//       success: true,
+//       user: req.user,
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+ // adjust path to your User model
+
+const getuserdetails = async (req, res, next) => {
   try {
     if (!req.user) {
       return res.status(401).json({
@@ -214,14 +233,25 @@ const getuserdetails = (req, res, next) => {
       });
     }
 
+    // Proper DB query to get full user with populated borrowed books
+    const user = await Users.findById(req.user.id).populate("booksborrowed");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found in database",
+      });
+    }
+
     res.status(200).json({
       success: true,
-      user: req.user,
+      user,
     });
   } catch (error) {
     next(error);
   }
 };
+
 
 const logout=async(req,res)=>{
     res.cookie("token",null,{
