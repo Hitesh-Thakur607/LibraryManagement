@@ -224,33 +224,29 @@ const verifyEmail = async (req, res) => {
 // };
  // adjust path to your User model
 
-const getuserdetails = async (req, res, next) => {
+const getuserdetails = async (req, res) => {
   try {
     if (!req.user) {
-      return res.status(401).json({
-        success: false,
-        message: "Unauthorized: No user found",
-      });
+      return res.status(401).json({ message: "Unauthorized: No user found" });
     }
 
-    // Proper DB query to get full user with populated borrowed books
-    const user = await users.findById(req.user.id).populate("booksborrowed");
+    const user = await users.findById(req.user.id)
+      .populate({
+        path: 'booksborrowed',
+        select: 'name description', // only fetch name and description
+      });
 
     if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found in database",
-      });
+      return res.status(404).json({ message: "User not found in DB" });
     }
 
-    res.status(200).json({
-      success: true,
-      user,
-    });
+    res.status(200).json(user);
   } catch (error) {
-    next(error);
+    console.error("GET /me error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 
 const logout=async(req,res)=>{
