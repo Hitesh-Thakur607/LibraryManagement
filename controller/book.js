@@ -49,7 +49,7 @@ const postBook = async (req, res) => {
     }
 };
 
-
+const borrowBook = async (req, res) => {
     try {
         const book = await books.findById(req.params.id);
         if (!book) {
@@ -78,7 +78,6 @@ const postBook = async (req, res) => {
         res.status(400).json({ message: "Invalid book ID" });
     }
 };
-
 // const borrowBook = async (req, res) => {
 //     try {
 //         const book = await books.findById(req.params.id);
