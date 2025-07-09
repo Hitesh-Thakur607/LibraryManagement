@@ -50,6 +50,35 @@ const postBook = async (req, res) => {
 };
 
 
+    try {
+        const book = await books.findById(req.params.id);
+        if (!book) {
+            return res.status(404).json({ message: "Book not found" });
+        }
+        if (book.borrowed) {
+            return res.status(400).json({ message: "Book already borrowed" });
+        }
+        console.log('bookId:', book); // see if it’s the full 24-character ID
+        book.borrowed = true;
+        book.borrowedby = req.user._id;  
+       // Fetch the user from the DB
+        // <- assumes user is added to request by auth middleware
+        book.borrowDate = new Date();
+        book.returnDate = null; // Reset return date when borrowing
+
+        
+        const user1 = await users.findById(req.user._id); 
+         // Check if user is fetched correctly
+        user1.booksborrowed.push(book._id);
+        await user1.save();;// Add book to user's borrowed books
+        await book.save();
+        res.status(200).json({ message: "Book borrowed", book });
+    } catch (error) {
+        console.error("Borrow Book Error:", error);
+        res.status(400).json({ message: "Invalid book ID" });
+    }
+};
+
 // const borrowBook = async (req, res) => {
 //     try {
 //         const book = await books.findById(req.params.id);
@@ -61,52 +90,19 @@ const postBook = async (req, res) => {
 //         }
 
 //         book.borrowed = true;
+//         book.borrowedby = req.user._id;  // <- assumes user is added to request by auth middleware
+//         book.borrowDate = new Date();
+//         book.returnDate = null; // Reset return date when borrowing
+
 //         await book.save();
 //         res.status(200).json({ message: "Book borrowed", book });
 //     } catch (error) {
+//         console.error("Borrow Book Error:", error);
 //         res.status(400).json({ message: "Invalid book ID" });
 //     }
 // };
-const borrowBook = async (req, res) => {
-    try {
-        const book = await books.findById(req.params.id);
-        if (!book) {
-            return res.status(404).json({ message: "Book not found" });
-        }
-        if (book.borrowed) {
-            return res.status(400).json({ message: "Book already borrowed" });
-        }
 
-        book.borrowed = true;
-        book.borrowedby = req.user._id;  // <- assumes user is added to request by auth middleware
-        book.borrowDate = new Date();
-        book.returnDate = null; // Reset return date when borrowing
 
-        await book.save();
-        res.status(200).json({ message: "Book borrowed", book });
-    } catch (error) {
-        console.error("Borrow Book Error:", error);
-        res.status(400).json({ message: "Invalid book ID" });
-    }
-};
-
-// const returnBook = async (req, res) => {
-//     try {
-//         const book = await books.findById(req.params.id);
-//         if (!book) {
-//             return res.status(404).json({ message: "Book not found" });
-//         }
-//         if (!book.borrowed) {
-//             return res.status(400).json({ message: "Book was not borrowed" });
-//         }
-
-//         book.borrowed = false;
-//         await book.save();
-//         res.status(200).json({ message: "Book returned", book });
-//     } catch (error) {
-//         res.status(400).json({ message: "Invalid book ID" });
-//     }
-// };
 
 const returnBook = async (req, res) => {
     try {
