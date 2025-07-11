@@ -78,30 +78,32 @@ const borrowBook = async (req, res) => {
         res.status(400).json({ message: "Invalid book ID" });
     }
 };
-// const borrowBook = async (req, res) => {
+
+
+// const returnBook = async (req, res) => {
 //     try {
 //         const book = await books.findById(req.params.id);
 //         if (!book) {
 //             return res.status(404).json({ message: "Book not found" });
 //         }
-//         if (book.borrowed) {
-//             return res.status(400).json({ message: "Book already borrowed" });
+//         if (!book.borrowed) {
+//             return res.status(400).json({ message: "Book was not borrowed" });
 //         }
 
-//         book.borrowed = true;
-//         book.borrowedby = req.user._id;  // <- assumes user is added to request by auth middleware
-//         book.borrowDate = new Date();
-//         book.returnDate = null; // Reset return date when borrowing
-
+//         book.borrowed = false;
+//         book.borrowedby = null; 
+//         book.borrowDate = null;
+//         book.returnDate = new Date();
+//         const user1 = await users.findById(req.user._id); 
+//          // Check if user is fetched correctly
+//         user1.booksborrowed.push(book._id);
+//         await user1.save();;// Add book to user's borrowed books
 //         await book.save();
-//         res.status(200).json({ message: "Book borrowed", book });
+//         res.status(200).json({ message: "Book returned", book });
 //     } catch (error) {
-//         console.error("Borrow Book Error:", error);
 //         res.status(400).json({ message: "Invalid book ID" });
 //     }
 // };
-
-
 
 const returnBook = async (req, res) => {
     try {
@@ -117,9 +119,12 @@ const returnBook = async (req, res) => {
         book.borrowedby = null; 
         book.borrowDate = null;
         book.returnDate = new Date();
-        const user1 = await users.findById(req.user._id); 
+        const user = await users.findById(req.user._id); 
          // Check if user is fetched correctly
-        user1.booksborrowed.push(book._id);
+           await User.findByIdAndUpdate(user, {
+      $pull: { booksborrowed: book._id}
+    });
+
         await user1.save();;// Add book to user's borrowed books
         await book.save();
         res.status(200).json({ message: "Book returned", book });
