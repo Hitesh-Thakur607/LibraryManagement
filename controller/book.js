@@ -116,14 +116,14 @@ const returnBook = async (req, res) => {
         }
 
         book.borrowed = false;
+        await users.findByIdAndUpdate(book.borrowedby, {
+      $pull: { booksborrowed: book._id}
+    });
         book.borrowedby = null; 
         book.borrowDate = null;
         book.returnDate = new Date();
-        const user = await users.findById(req.user._id); 
+        // const user = await users.findById(req.user._id); 
          // Check if user is fetched correctly
-           await User.findByIdAndUpdate(user, {
-      $pull: { booksborrowed: book._id}
-    });
 
         await user1.save();;// Add book to user's borrowed books
         await book.save();
