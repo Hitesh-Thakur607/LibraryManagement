@@ -23,7 +23,7 @@ const register = async (req, res) => {
     secure: false,
     auth: {
       user: "tv293435@gmail.com",
-      pass: "igtf tilt zwyy bkcc",
+      pass: "igtf tilt zwykcc",
     },
   });
 
